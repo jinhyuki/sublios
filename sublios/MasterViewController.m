@@ -61,14 +61,21 @@
     [checkSheetMapping addAttributeMappingsFromArray:@[@"name"]];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor =
+    RKResponseDescriptor *sampleResponseDescriptor =
     [RKResponseDescriptor responseDescriptorWithMapping:checkSheetMapping
                                                  method:RKRequestMethodGET
                                             pathPattern:@"/app_dev.php/json"
                                                 keyPath:@"result"
                                             statusCodes:[NSIndexSet indexSetWithIndex:200]];
+    RKResponseDescriptor *responseDescriptor =
+    [RKResponseDescriptor responseDescriptorWithMapping:checkSheetMapping
+                                                 method:RKRequestMethodGET
+                                            pathPattern:@"/app_dev.php/api/checksheet"
+                                                keyPath:@"result"
+                                            statusCodes:[NSIndexSet indexSetWithIndex:200]];
     
     [objectManager addResponseDescriptor:responseDescriptor];
+    [objectManager addResponseDescriptor:sampleResponseDescriptor];
 }
 
 /**
@@ -83,7 +90,7 @@
     
     [
         [RKObjectManager sharedManager]
-        getObjectsAtPath:@"/app_dev.php/json"
+        getObjectsAtPath:@"/app_dev.php/api/checksheet"
         parameters:queryParams
         success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             _sheets = mappingResult.array;
